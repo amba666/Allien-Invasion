@@ -2,7 +2,7 @@ import sys
 import pygame
 
 from settings import Settings
-
+from ship import Ship
 class AllienInvasion:
       """class ro manage game assets amd behaviour."""
 
@@ -13,6 +13,8 @@ class AllienInvasion:
 
             self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
             pygame.display.set_caption("Allien Invasion")
+
+            self.ship = Ship(self)
 
             #set bg-color
             self.bg_color = (230, 230, 230)
@@ -28,6 +30,7 @@ class AllienInvasion:
 
                   #redraw the screen during @ pass thru the loop
                    self.screen.fill(self.settings.bg_color)
+                   self.ship.blitme()
 
 
                     #Make most recently drawn screen visible.
