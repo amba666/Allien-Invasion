@@ -13,7 +13,21 @@ class AllienInvasion:
 
       def  run_game(self):
             """Start the main loop for the game"""
+            while True:
+                   """Watch keyboard and mouse events"""
+                   for event in pygame.event.get():
+                         if event.type == pygame.QUIT:
+                               sys.exit()
 
+
+                    #Make most recently drawn screen visible.
+                   pygame.display.flip()
+
+
+if __name__ == '__main__':
+      #make a game instance an run the game.
+      ai = AllienInvasion()
+      ai.run_game()
             
             
            
