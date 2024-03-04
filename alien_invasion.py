@@ -24,17 +24,32 @@ class AllienInvasion:
             """Start the main loop for the game"""
             while True:
                    """Watch keyboard and mouse events"""
-                   for event in pygame.event.get():
+                   self._check_events()
+                   self._update_screen()
+                  
+
+               
+      def _check_events(self):
+            """Resposnd to keypresses and mouse events."""
+            for event in pygame.event.get():
                          if event.type == pygame.QUIT:
                                sys.exit()
 
-                  #redraw the screen during @ pass thru the loop
-                   self.screen.fill(self.settings.bg_color)
-                   self.ship.blitme()
+                         elif event.type == pygame.KEYDOWN:
+                                if event.key == pygame.K_RIGHT:
+                                       #move the ship tothe right
+                                       self.ship.rect.x += 1
+
+      def _update_screen(self):
+             """Update images on the screen , and flip to the  ne screen"""
+                #redraw the screen during @ pass thru the loop
+             self.screen.fill(self.settings.bg_color)
+             self.ship.blitme()
 
 
                     #Make most recently drawn screen visible.
-                   pygame.display.flip()
+             pygame.display.flip()
+     
 
 
 if __name__ == '__main__':
