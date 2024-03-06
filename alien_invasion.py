@@ -4,6 +4,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 class AllienInvasion:
       """class to manage game assets amd behaviour."""
 
@@ -11,6 +12,7 @@ class AllienInvasion:
             """Initilize the game, and create game resouses."""
             pygame.init()
             self.settings = Settings()
+
 
             #add full screen mode 
             # self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
@@ -22,8 +24,19 @@ class AllienInvasion:
 
             self.ship = Ship(self)
             self.bullets = pygame.sprite.Group()
+            self.aliens = pygame.sprite.Group() 
             #set bg-color
             self.bg_color = (230, 230, 230)
+
+
+      def _create_fleet(self):
+            """create the fleet of aliens."""
+            #make an alien
+            alien = Alien(self)
+            self.aliens.add(alien)
+
+
+      
 
 
       def  run_game(self):
@@ -34,6 +47,13 @@ class AllienInvasion:
                    self.ship.update()
                    self.bullets.update()
                    self._update_screen()
+
+
+                   #get rid of bullets that have disappeared
+                   for bullet in self.bullets.copy():
+                         if bullet.rect.bottom <= 0 :
+                               self.bullets.remove(bullet)
+                  # print(len(self.bullets))
                   
 
                
@@ -71,8 +91,10 @@ class AllienInvasion:
 
       def _fire_bullet(self):
             """create new bullet and add it to the bullets group"""
-            new_bullet = Bullet(self)
-            self.bullets.add(new_bullet)
+            if len(self.bullets) < self.settings.bullets_allowed:
+
+             new_bullet = Bullet(self)
+             self.bullets.add(new_bullet)
 
       def _update_screen(self):
              """Update images on the screen , and flip to the  ne screen"""
@@ -82,6 +104,8 @@ class AllienInvasion:
 
              for bullet in self.bullets.sprites():
                    bullet.draw_bullet()
+
+             self.aliens.draw(self.screen)
 
 
             #Make most recently drawn screen visible.
