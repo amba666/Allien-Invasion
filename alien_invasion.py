@@ -25,6 +25,7 @@ class AllienInvasion:
             self.ship = Ship(self)
             self.bullets = pygame.sprite.Group()
             self.aliens = pygame.sprite.Group() 
+            self._create_fleet() 
             #set bg-color
             self.bg_color = (230, 230, 230)
 
@@ -106,6 +107,7 @@ class AllienInvasion:
                    bullet.draw_bullet()
 
              self.aliens.draw(self.screen)
+             
 
 
             #Make most recently drawn screen visible.
