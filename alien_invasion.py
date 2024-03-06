@@ -3,8 +3,9 @@ import pygame
 
 from settings import Settings
 from ship import Ship
+from bullet import Bullet
 class AllienInvasion:
-      """class ro manage game assets amd behaviour."""
+      """class to manage game assets amd behaviour."""
 
       def __init__(self):
             """Initilize the game, and create game resouses."""
@@ -12,15 +13,15 @@ class AllienInvasion:
             self.settings = Settings()
 
             #add full screen mode 
-            self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
-            self.settings.screen_width = self.screen.get_rect().width
-            self.settings.screen_height = self.screen.get_rect().height
+            # self.screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+            # self.settings.screen_width = self.screen.get_rect().width
+            # self.settings.screen_height = self.screen.get_rect().height
 
-            # self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))if self.moving_left and self.rect > 0:
+            self.screen = pygame.display.set_mode((self.settings.screen_width, self.settings.screen_height))
             pygame.display.set_caption("Allien Invasion")
 
             self.ship = Ship(self)
-
+            self.bullets = pygame.sprite.Group()
             #set bg-color
             self.bg_color = (230, 230, 230)
 
@@ -31,6 +32,7 @@ class AllienInvasion:
                    """Watch keyboard and mouse events"""
                    self._check_events()
                    self.ship.update()
+                   self.bullets.update()
                    self._update_screen()
                   
 
@@ -49,13 +51,16 @@ class AllienInvasion:
                                
 
       def _check_keydown_events(self, event):
-             """Respond to the keypresses"""
-             if event.key == pygame.K_RIGHT:
-                   self.ship.moving_right = True
-             elif event.key == pygame.K_LEFT:
-                   self.ship.moving_left = True
-             elif event.key == pygame.K_q:
-                  sys.exit()
+         """Respond to the keypresses"""
+         if event.key == pygame.K_RIGHT:
+             self.ship.moving_right = True
+         elif event.key == pygame.K_LEFT:
+             self.ship.moving_left = True
+         elif event.key == pygame.K_q:
+               sys.exit()
+         elif event.key == pygame.K_SPACE:
+                   # Fire the bullets
+               self._fire_bullet()
 
       def _check_keyup_events(self,event):
              """Respond to key release""" 
@@ -64,14 +69,22 @@ class AllienInvasion:
              elif event.key == pygame.K_LEFT:
                    self.ship.moving_left = False
 
+      def _fire_bullet(self):
+            """create new bullet and add it to the bullets group"""
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
       def _update_screen(self):
              """Update images on the screen , and flip to the  ne screen"""
                 #redraw the screen during @ pass thru the loop
              self.screen.fill(self.settings.bg_color)
              self.ship.blitme()
 
+             for bullet in self.bullets.sprites():
+                   bullet.draw_bullet()
 
-                    #Make most recently drawn screen visible.
+
+            #Make most recently drawn screen visible.
              pygame.display.flip()
      
 
